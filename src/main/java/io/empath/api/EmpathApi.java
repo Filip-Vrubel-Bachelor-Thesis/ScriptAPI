@@ -18,7 +18,7 @@ import java.util.Collection;
  * // ... run analysis ...
  * def detections = hierarchy.getDetectionObjects()
  * api.postAnnotations("output_annotations", detections)
- * api.postValue("output_values", detections.size())
+ * api.postValues("output_values", [detections.size()])
  * }</pre>
  */
 public interface EmpathApi {
@@ -32,14 +32,14 @@ public interface EmpathApi {
     PathObject getInputRoi();
 
     /**
-     * Posts a single numeric value to the given EMPAIA output key.
-     * The value is wrapped in a {@code PostFloatCollection} as required by
+     * Posts a collection of numeric values to the given EMPAIA output key.
+     * The values are wrapped in a {@code PostFloatCollection} as required by
      * the EMPAIA App API.
      *
      * @param outputKey the output key as defined in the EAD (e.g. "output_values")
-     * @param value     the numeric result to post
+     * @param values    the numeric results to post
      */
-    void postValue(String outputKey, Number value);
+    void postValues(String outputKey, Collection<? extends Number> values);
 
     /**
      * Posts a collection of {@link PathObject} detections as polygon annotations
