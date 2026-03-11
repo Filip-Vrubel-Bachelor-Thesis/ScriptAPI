@@ -1,7 +1,9 @@
 package qupath.ext.script.api;
 
+import qupath.lib.images.servers.ImageServer;
 import qupath.lib.objects.PathObject;
 
+import java.io.File;
 import java.util.Collection;
 
 /**
@@ -52,11 +54,56 @@ public interface ScriptApi {
     void postAnnotations(String outputKey, Collection<PathObject> detections);
 
     /**
-     * Reports a failure to EMPAIA and terminates the job with an error message
+     * Reports the current progress of the script execution as a fraction.
+     * The platform manager will periodically read this value and forward it
+     * to the job platform (e.g. EMPAIA's progress endpoint).
+     *
+     * <p>Call this from within your script to indicate how far along the
+     * analysis is. The value is clamped to [0.0, 1.0].
+     *
+     * @param fraction completion fraction, where 0.0 = just started, 1.0 = done
+     */
+    void reportProgress(double fraction);
+
+    /**
+     * Reports a failure and terminates the job with an error message
      * visible to the user in the frontend.
      * After calling this method, the script should not post any further outputs.
      *
      * @param message a human-readable description of what went wrong
      */
     void fail(String message);
+
+    // ── Script lifecycle (formerly ScriptRunner) ──────────────────────────────
+
+    /**
+     * Starts executing the given script asynchronously. Returns immediately.
+     * The platform manager is expected to poll {@link #isFinished()} until done.
+     *
+     * <p>The implementation is responsible for opening the image from the server,
+     * adding the input ROI to the hierarchy, and injecting {@code api},
+     * {@code imageData}, and {@code hierarchy} bindings into the script.
+     *
+     * @param script the Groovy script file to execute
+     * @param server the image server providing pixel data
+     */
+    void start(File script, ImageServer<?> server);
+
+    /**
+     * Returns the current progress as a fraction [0.0, 1.0].
+     * Updated asynchronously as the script calls {@link #reportProgress(double)}.
+     */
+    double getProgress();
+
+    /**
+     * Returns {@code true} once the script has finished, either successfully
+     * or with an error.
+     */
+    boolean isFinished();
+
+    /**
+     * Returns the exception thrown during execution, or {@code null} if the
+     * script completed successfully (or has not finished yet).
+     */
+    Throwable getError();
 }
