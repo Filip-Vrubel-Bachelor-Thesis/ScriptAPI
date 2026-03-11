@@ -1,1 +1,1 @@
-rootProject.name = "empath-api"
+rootProject.name = "script-api"

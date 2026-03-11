@@ -8,7 +8,7 @@ java {
     }
 }
 
-group = "io.empath"
+group = "qupath.ext"
 version = "0.1.0"
 
 repositories {

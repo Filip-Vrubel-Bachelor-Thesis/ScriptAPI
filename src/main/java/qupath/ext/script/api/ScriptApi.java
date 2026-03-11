@@ -1,12 +1,12 @@
-package io.empath.api;
+package qupath.ext.script.api;
 
 import qupath.lib.objects.PathObject;
 
 import java.util.Collection;
 
 /**
- * EmpathApi — the public contract between user-authored QuPath/Groovy scripts
- * and the EMPAIA platform.
+ * ScriptApi — the platform-agnostic contract between user-authored QuPath/Groovy
+ * scripts and any analysis platform (EMPAIA, local, etc.).
  *
  * <p>An instance is injected into every script at runtime under the variable
  * name {@code api}. Scripts should not instantiate this interface themselves.
@@ -21,7 +21,7 @@ import java.util.Collection;
  * api.postValues("output_values", [detections.size()])
  * }</pre>
  */
-public interface EmpathApi {
+public interface ScriptApi {
 
     /**
      * Returns the input ROI for this job as a {@link PathObject} annotation.
