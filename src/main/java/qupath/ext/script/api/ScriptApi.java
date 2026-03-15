@@ -71,8 +71,9 @@ public interface ScriptApi {
      * After calling this method, the script should not post any further outputs.
      *
      * @param message a human-readable description of what went wrong
+        * @return {@code true} if reporting the failure succeeded (HTTP 2xx), otherwise {@code false}
      */
-    void fail(String message);
+        boolean failJob(String message);
 
     // ── Script lifecycle (formerly ScriptRunner) ──────────────────────────────
 
