@@ -36,6 +36,10 @@ public interface ScriptApi {
     /** Input ROI annotation for this job, already added to the hierarchy. Null = full slide. */
     PathObject getInputRoi();
 
+    /** Raw string value of a named EMPAIA job input (as declared in the EAD's `io` section).
+     * Null if missing or unavailable; caller converts to whatever type it needs. */
+    String getInput(String key);
+
     // ── Outputs ───────────────────────────────────────────────────────────────
 
     /** Post numeric results to the given output key. */
@@ -50,7 +54,7 @@ public interface ScriptApi {
     void reportProgress(double fraction);
 
     /** Fail the job with a human-readable error message. */
-    void fail(String message);
+    void failJob(String message);
 
     // ── Runner (platform-managed, not called from scripts) ────────────────────
 
