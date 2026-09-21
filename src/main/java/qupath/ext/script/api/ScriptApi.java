@@ -34,6 +34,19 @@ public interface ScriptApi {
     PathObject getInputRoi();
 
     /**
+     * Returns the raw string value of a named EMPAIA job input, or {@code null}
+     * if it is missing or could not be fetched.
+     *
+     * <p>Unlike {@link #getInputRoi()}, there is no dedicated ROI parsing —
+     * the caller is responsible for converting the returned string to whatever
+     * type it needs (e.g. {@code Double.parseDouble}).
+     *
+     * @param key the EMPAIA input key as defined in the EAD's {@code io} section
+     * @return the input's raw string value, or {@code null} if unavailable
+     */
+    String getInput(String key);
+
+    /**
      * Posts a collection of numeric values to the given EMPAIA output key.
      * The values are wrapped in a {@code PostFloatCollection} as required by
      * the EMPAIA App API.
